@@ -1,4 +1,4 @@
-import 'package:api/app/models/models.dart';
+import 'package:api/app/domain/models/models.dart';
 
 class HttpResultModel<T> {
   final T? data;

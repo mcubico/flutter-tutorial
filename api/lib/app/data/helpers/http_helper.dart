@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:api/app/helpers/helpers.dart';
-import 'package:api/app/models/models.dart';
+import 'package:api/app/domain/enumerators/enumerators.dart';
+import 'package:api/app/domain/models/models.dart';
 import 'package:http/http.dart';
 
 typedef Parser<T> = T Function(dynamic data);
@@ -13,7 +13,7 @@ class HttpHelper {
 
   Future<HttpResultModel<T>> request<T>(
     String endpoint, {
-    HttpMethod method = HttpMethod.get,
+    HttpMethodEnum method = HttpMethodEnum.get,
     Map<String, String> headers = const {},
     Map<String, String> queryParameters = const {},
     dynamic body,
@@ -21,11 +21,14 @@ class HttpHelper {
     Duration timeout = const Duration(seconds: 10),
   }) async {
     late int? statusCode;
-    late dynamic data;
+    dynamic data;
 
     try {
-      final Uri url = _makeUrl(endpoint, queryParameters);
-      final response = await sendRequest(
+      Uri url = _makeUrl(endpoint, queryParameters);
+      late Response response;
+
+      body = _parseBody(body);
+      response = await _sendRequest(
         url: url,
         method: method,
         headers: headers,
@@ -59,13 +62,13 @@ class HttpHelper {
 
       // Se presentó un error en la comunicación con el servidor
       return HttpResultModel<T>(
-        data: data,
+        data: data ?? 'no-data',
         error: HttpErrorModel(
           exception: exception,
           stackTrace: stackTrace,
           data: data,
         ),
-        statusCode: -1,
+        statusCode: statusCode ?? -1,
       );
     }
   }
@@ -91,9 +94,9 @@ class HttpHelper {
   bool _urlContainHttpOrHttps(String endpoint) =>
       endpoint.startsWith('http://') || endpoint.startsWith('https://');
 
-  static Future<Response> sendRequest({
+  Future<Response> _sendRequest({
     required Uri url,
-    required HttpMethod method,
+    required HttpMethodEnum method,
     required Map<String, String> headers,
     required dynamic body,
     required Duration timeout,
@@ -103,39 +106,39 @@ class HttpHelper {
     final headersAux = {...headers};
     late Client client;
 
-    if (method != HttpMethod.get) {
+    if (method != HttpMethodEnum.get) {
       final contentType = headersAux['Content-type'];
 
       if (contentType == null || contentType.contains('application/json')) {
-        headersAux['Content-type'] = 'application/json; charset=UTF-8';
+        //headersAux['Content-type'] = 'application/json; charset=UTF-8';
         body = _parseBody(body);
       }
     }
 
     client = Client();
     switch (method) {
-      case HttpMethod.get:
+      case HttpMethodEnum.get:
         return client.get(url, headers: headersAux).timeout(timeout);
-      case HttpMethod.post:
+      case HttpMethodEnum.post:
         return client
             .post(url, headers: headersAux, body: body)
             .timeout(timeout);
-      case HttpMethod.put:
+      case HttpMethodEnum.put:
         return client
             .put(url, headers: headersAux, body: body)
             .timeout(timeout);
-      case HttpMethod.patch:
+      case HttpMethodEnum.patch:
         return client
             .patch(url, headers: headersAux, body: body)
             .timeout(timeout);
-      case HttpMethod.delete:
+      case HttpMethodEnum.delete:
         return client
             .delete(url, headers: headersAux, body: body)
             .timeout(timeout);
     }
   }
 
-  static dynamic _parseBody(dynamic body) {
+  dynamic _parseBody(dynamic body) {
     try {
       return jsonDecode(body);
     } catch (_) {
