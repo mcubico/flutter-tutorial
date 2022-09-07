@@ -1,0 +1,1 @@
+export 'package:formularios/app/ui/widgets/auth_background_widget.dart';
