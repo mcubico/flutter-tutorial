@@ -9,7 +9,10 @@ class AuthBackgroundWidget extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       child: Stack(
-        children: const [_PurpleBox()],
+        children: const [
+          _PurpleBox(),
+          _HeaderIcon(),
+        ],
       ),
     );
   }
@@ -57,6 +60,27 @@ class _Bubble extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         color: const Color.fromRGBO(255, 255, 255, 0.05),
+      ),
+    );
+  }
+}
+
+class _HeaderIcon extends StatelessWidget {
+  const _HeaderIcon({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SafeArea(
+      child: SizedBox(
+        // Esto centra el child en toda la pantalla
+        width: double.infinity,
+        child: Icon(
+          Icons.person_pin,
+          color: Colors.white,
+          size: 100,
+        ),
       ),
     );
   }
