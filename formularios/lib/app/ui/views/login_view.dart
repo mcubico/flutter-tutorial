@@ -131,7 +131,7 @@ class _LoginForm extends StatelessWidget {
                     // Se usa pushReplacementNamed para que no se de la opción de
                     // regresar al login al usuario ya que se destruye el stack de las
                     // pantallas y establece el home como la pantalla inicial
-                    //Navigator.pushReplacementNamed(context, 'home');
+                    Navigator.pushReplacementNamed(context, 'home');
                   },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
