@@ -13,7 +13,10 @@ class HomeView extends StatelessWidget {
         ),
         body: ListView.builder(
           itemCount: 10,
-          itemBuilder: (context, index) => const ProductCardWidget(),
+          itemBuilder: (context, index) => GestureDetector(
+            child: const ProductCardWidget(),
+            onTap: () => Navigator.pushNamed(context, 'product'),
+          ),
         ));
   }
 }
