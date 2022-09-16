@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:formularios/app/ui/widgets/widgets.dart';
 
 class ProductCardWidget extends StatelessWidget {
   const ProductCardWidget({super.key});
@@ -58,8 +57,6 @@ class _ProductDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }

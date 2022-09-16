@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:formularios/app/ui/widgets/widgets.dart';
+import 'package:apifernando/app/ui/widgets/widgets.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class HomeView extends StatelessWidget {
         ),
         body: ListView.builder(
           itemCount: 10,
-          itemBuilder: (context, index) => ProductCardWidget(),
+          itemBuilder: (context, index) => const ProductCardWidget(),
         ));
   }
 }
