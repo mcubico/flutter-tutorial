@@ -1,7 +1,10 @@
+import 'package:apifernando/app/domain/models/models.dart';
 import 'package:flutter/material.dart';
 
 class ProductCardWidget extends StatelessWidget {
-  const ProductCardWidget({super.key});
+  final ProductModel product;
+
+  const ProductCardWidget({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +17,21 @@ class ProductCardWidget extends StatelessWidget {
         decoration: _createCardShape(),
         child: Stack(
           alignment: Alignment.bottomLeft,
-          children: const [
-            _BackgroundImage(),
-            _ProductDetail(),
-            Positioned(top: 0, right: 0, child: _PriceTag()),
-            Positioned(top: 0, left: 0, child: _NotAvailable()),
+          children: [
+            _BackgroundImage(url: product.picture),
+            _ProductDetail(
+              title: product.name,
+              description: product.description,
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: _PriceTag(
+                price: product.price,
+              ),
+            ),
+            if (!product.available)
+              const Positioned(top: 0, left: 0, child: _NotAvailable()),
           ],
         ),
       ),
@@ -39,7 +52,12 @@ class ProductCardWidget extends StatelessWidget {
 }
 
 class _BackgroundImage extends StatelessWidget {
-  const _BackgroundImage({super.key});
+  final String? url;
+
+  static const String _noImagePath = 'assets/images/no-image.png';
+  static const String _loadingImagePath = 'assets/images/jar-loading.gif';
+
+  const _BackgroundImage({this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +67,10 @@ class _BackgroundImage extends StatelessWidget {
         width: double.infinity,
         height: 400,
         child: FadeInImage(
-          placeholder: const AssetImage('assets/images/jar-loading.gif'),
-          image:
-              const NetworkImage('https://via.placeholder.com/400x300/f6f6f6'),
+          placeholder: const AssetImage(_loadingImagePath),
+          image: NetworkImage(url ?? _noImagePath),
           imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-            'assets/images/no-image.png',
+            _noImagePath,
             fit: BoxFit.cover,
           ),
           fit: BoxFit.cover,
@@ -64,7 +81,14 @@ class _BackgroundImage extends StatelessWidget {
 }
 
 class _ProductDetail extends StatelessWidget {
-  const _ProductDetail({super.key});
+  final String title;
+  final String description;
+
+  const _ProductDetail({
+    required this.title,
+    required this.description,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -76,10 +100,10 @@ class _ProductDetail extends StatelessWidget {
         decoration: _buildBoxDecoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
-              'Product title',
-              style: TextStyle(
+              title,
+              style: const TextStyle(
                 fontSize: 20,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -87,8 +111,8 @@ class _ProductDetail extends StatelessWidget {
               ),
             ),
             Text(
-              'Short description',
-              style: TextStyle(
+              description,
+              style: const TextStyle(
                 fontSize: 15,
                 color: Colors.white,
               ),
@@ -109,7 +133,8 @@ class _ProductDetail extends StatelessWidget {
 }
 
 class _PriceTag extends StatelessWidget {
-  const _PriceTag({super.key});
+  final double price;
+  const _PriceTag({required this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +142,13 @@ class _PriceTag extends StatelessWidget {
       width: 100,
       height: 70,
       decoration: _buildBoxDecoration,
-      child: const FittedBox(
+      child: FittedBox(
         fit: BoxFit.contain,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            '\$1.299.00',
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            '\$$price',
+            style: const TextStyle(color: Colors.white, fontSize: 20),
           ),
         ),
       ),

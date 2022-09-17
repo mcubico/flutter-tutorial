@@ -1,0 +1,1 @@
+export 'package:apifernando/app/domain/models/product_model.dart';
