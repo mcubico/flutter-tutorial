@@ -180,7 +180,8 @@ class _ProductDetailForm extends StatelessWidget {
               value: product.available,
               title: const Text('Available'),
               activeColor: Colors.indigo,
-              onChanged: (value) => product.available = value,
+              onChanged: (value) =>
+                  productDetailForm.updateAvailability = value,
             ),
             const SizedBox(height: 30),
 

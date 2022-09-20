@@ -34,7 +34,6 @@ class ProductImageWidget extends StatelessWidget {
   }
 
   BoxDecoration get _buildBoxDecoration => BoxDecoration(
-        color: Colors.red,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(45),
           topRight: Radius.circular(45),
