@@ -2,8 +2,8 @@ import 'package:apifernando/app/ui/helpers/helpers.dart';
 import 'package:apifernando/app/ui/widgets/product_image_widget.dart';
 import 'package:flutter/material.dart';
 
-class ProductView extends StatelessWidget {
-  const ProductView({Key? key}) : super(key: key);
+class ProductScreen extends StatelessWidget {
+  const ProductScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

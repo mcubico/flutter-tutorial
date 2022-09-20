@@ -5,8 +5,8 @@ import 'package:apifernando/app/domain/providers/providers.dart';
 import 'package:apifernando/app/ui/helpers/helpers.dart';
 import 'package:apifernando/app/ui/widgets/widgets.dart';
 
-class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
