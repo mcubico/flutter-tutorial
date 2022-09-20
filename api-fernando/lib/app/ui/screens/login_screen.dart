@@ -1,3 +1,4 @@
+import 'package:apifernando/app/domain/helpers/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -75,8 +76,7 @@ class _LoginForm extends StatelessWidget {
                 return 'Este campo es requerido';
               }
 
-              String pattern =
-                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+              String pattern = emailRegexp;
               RegExp regExp = RegExp(pattern);
 
               return regExp.hasMatch(value)

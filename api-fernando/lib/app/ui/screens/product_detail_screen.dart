@@ -1,9 +1,11 @@
 import 'package:apifernando/app/data/services/services.dart';
+import 'package:apifernando/app/domain/helpers/constants/constants.dart';
 import 'package:apifernando/app/domain/models/models.dart';
 import 'package:apifernando/app/domain/providers/providers.dart';
 import 'package:apifernando/app/ui/helpers/helpers.dart';
 import 'package:apifernando/app/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -161,6 +163,9 @@ class _ProductDetailForm extends StatelessWidget {
                 hintText: '\$0.00',
                 labelText: 'Price',
               ),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(onlyDecimalsRegexp)),
+              ],
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Este campo es requerido';
