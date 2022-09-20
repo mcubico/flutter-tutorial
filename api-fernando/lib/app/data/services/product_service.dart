@@ -11,6 +11,7 @@ class ProductService extends ChangeNotifier {
 
   // Properties
   final List<ProductModel> products = [];
+  late ProductModel? selectedProduct;
 
   bool get isLoading => _isLoading;
   set isLoading(value) {
@@ -25,6 +26,8 @@ class ProductService extends ChangeNotifier {
 
   // Public Methods
   Future getAll() async {
+    print('Start: ProductService -> getAll');
+
     isLoading = true;
     final url = Uri.https(_baseUlr, 'products.json');
     final response = await http.get(url);
@@ -37,5 +40,7 @@ class ProductService extends ChangeNotifier {
     }
 
     isLoading = false;
+
+    print('End: ProductService -> getAll');
   }
 }

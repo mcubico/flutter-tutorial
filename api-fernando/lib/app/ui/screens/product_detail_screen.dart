@@ -1,9 +1,33 @@
+import 'package:apifernando/app/data/services/services.dart';
+import 'package:apifernando/app/domain/models/models.dart';
+import 'package:apifernando/app/domain/providers/providers.dart';
 import 'package:apifernando/app/ui/helpers/helpers.dart';
-import 'package:apifernando/app/ui/widgets/product_image_widget.dart';
+import 'package:apifernando/app/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProductScreen extends StatelessWidget {
-  const ProductScreen({Key? key}) : super(key: key);
+class ProductDetailScreen extends StatelessWidget {
+  const ProductDetailScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final productService = Provider.of<ProductService>(context);
+
+    return ChangeNotifierProvider(
+      create: (context) =>
+          ProductDetailFormProvider(product: productService.selectedProduct!),
+      child: _ProductDetailScreenBody(productService: productService),
+    );
+  }
+}
+
+class _ProductDetailScreenBody extends StatelessWidget {
+  const _ProductDetailScreenBody({
+    Key? key,
+    required this.productService,
+  }) : super(key: key);
+
+  final ProductService productService;
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +38,14 @@ class ProductScreen extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  const ProductImageWidget(),
+                  ProductImageWidget(
+                    imagePath: productService.selectedProduct?.picture,
+                  ),
                   Positioned(top: 20, left: 20, child: _BackButton()),
                   Positioned(top: 20, right: 40, child: _CameraButton()),
                 ],
               ),
-              _ProductFormContainer(),
+              _ProductDetailFormContainer(),
               const SizedBox(height: 100),
             ],
           ),
@@ -62,7 +88,7 @@ class _CameraButton extends StatelessWidget {
   }
 }
 
-class _ProductFormContainer extends StatelessWidget {
+class _ProductDetailFormContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -70,7 +96,7 @@ class _ProductFormContainer extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: _buildBoxDecoration,
-        child: _ProductForm(),
+        child: _ProductDetailForm(),
       ),
     );
   }
@@ -90,9 +116,12 @@ class _ProductFormContainer extends StatelessWidget {
           ]);
 }
 
-class _ProductForm extends StatelessWidget {
+class _ProductDetailForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final productDetailForm = Provider.of<ProductDetailFormProvider>(context);
+    final ProductModel product = productDetailForm.product;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Form(
@@ -101,6 +130,8 @@ class _ProductForm extends StatelessWidget {
           children: [
             // Product name
             TextFormField(
+              initialValue: product.name,
+              onChanged: (value) => product.name = value,
               autocorrect: false,
               keyboardType: TextInputType.text,
               decoration: InputDecorationHelper.authInputDecoration(
@@ -119,8 +150,12 @@ class _ProductForm extends StatelessWidget {
 
             // Price
             TextFormField(
+              initialValue: '${product.price}',
+              onChanged: (value) {
+                double? price = double.tryParse(value);
+                product.price = price ?? 0;
+              },
               autocorrect: false,
-              obscureText: true,
               keyboardType: TextInputType.number,
               decoration: InputDecorationHelper.authInputDecoration(
                 hintText: '\$0.00',
@@ -137,10 +172,10 @@ class _ProductForm extends StatelessWidget {
             const SizedBox(height: 30),
 
             SwitchListTile.adaptive(
-              value: true,
+              value: product.available,
               title: const Text('Available'),
               activeColor: Colors.indigo,
-              onChanged: (value) {},
+              onChanged: (value) => product.available = value,
             ),
             const SizedBox(height: 30),
 

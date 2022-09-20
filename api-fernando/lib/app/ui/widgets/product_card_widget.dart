@@ -1,3 +1,4 @@
+import 'package:apifernando/app/domain/helpers/constants/constants.dart';
 import 'package:apifernando/app/domain/models/models.dart';
 import 'package:flutter/material.dart';
 
@@ -54,9 +55,6 @@ class ProductCardWidget extends StatelessWidget {
 class _BackgroundImage extends StatelessWidget {
   final String? url;
 
-  static const String _noImagePath = 'assets/images/no-image.png';
-  static const String _loadingImagePath = 'assets/images/jar-loading.gif';
-
   const _BackgroundImage({this.url});
 
   @override
@@ -67,10 +65,10 @@ class _BackgroundImage extends StatelessWidget {
         width: double.infinity,
         height: 400,
         child: FadeInImage(
-          placeholder: const AssetImage(_loadingImagePath),
-          image: NetworkImage(url ?? _noImagePath),
+          placeholder: const AssetImage(loadingImagePath),
+          image: NetworkImage(url ?? noImagePath),
           imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-            _noImagePath,
+            noImagePath,
             fit: BoxFit.cover,
           ),
           fit: BoxFit.cover,

@@ -2,11 +2,11 @@ import 'dart:convert';
 
 class ProductModel {
   final String? id;
-  final bool available;
-  final String name;
-  final String description;
-  final String? picture;
-  final double price;
+  bool available;
+  String name;
+  String description;
+  String? picture;
+  double price;
 
   static const String idColumnName = "id";
   static const String availableColumnName = "available";
@@ -46,4 +46,14 @@ class ProductModel {
       };
 
   String toJson() => json.encode(toMap());
+
+  // Este método crea una copia del modelo
+  ProductModel copy() => ProductModel(
+    id: id,
+    available: available,
+    name: name,
+    description: description,
+    picture: picture,
+    price: price,
+  );
 }

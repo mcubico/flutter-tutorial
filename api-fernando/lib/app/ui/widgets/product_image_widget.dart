@@ -1,7 +1,10 @@
+import 'package:apifernando/app/domain/helpers/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class ProductImageWidget extends StatelessWidget {
-  const ProductImageWidget({super.key});
+  final String? imagePath;
+
+  const ProductImageWidget({super.key, this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +19,15 @@ class ProductImageWidget extends StatelessWidget {
             topLeft: Radius.circular(45),
             topRight: Radius.circular(45),
           ),
-          child: FadeInImage(
-            placeholder: const AssetImage('assets/images/jar-loading.gif'),
-            image: const NetworkImage(
-                'https://via.placeholder.com/400x300/f6f6f6'),
-            imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-              'assets/images/no-image.png',
-              fit: BoxFit.cover,
-            ),
-            fit: BoxFit.cover,
-          ),
+          child: imagePath == null
+              ? _getNoImage()
+              : FadeInImage(
+                  placeholder: const AssetImage(loadingImagePath),
+                  image: NetworkImage(imagePath!),
+                  imageErrorBuilder: (context, error, stackTrace) =>
+                      _getNoImage(),
+                  fit: BoxFit.cover,
+                ),
         ),
       ),
     );
@@ -45,4 +47,11 @@ class ProductImageWidget extends StatelessWidget {
           ),
         ],
       );
+
+  Image _getNoImage() {
+    return Image.asset(
+      noImagePath,
+      fit: BoxFit.cover,
+    );
+  }
 }
