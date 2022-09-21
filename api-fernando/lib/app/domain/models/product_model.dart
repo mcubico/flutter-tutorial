@@ -37,7 +37,7 @@ class ProductModel {
       );
 
   Map<String, dynamic> toMap() => {
-        idColumnName: available,
+        idColumnName: id,
         availableColumnName: available,
         nameColumnName: name,
         descriptionColumnName: description,

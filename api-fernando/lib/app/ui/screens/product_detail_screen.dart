@@ -33,6 +33,8 @@ class _ProductDetailScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productDetailForm = Provider.of<ProductDetailFormProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -55,7 +57,11 @@ class _ProductDetailScreenBody extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.save_outlined),
-          onPressed: () {},
+          onPressed: () async {
+            if (!productDetailForm.isValidForm()) return;
+
+            await productService.updateOrCreateProduct(productDetailForm.product);
+          },
         ),
       ),
     );
@@ -127,6 +133,7 @@ class _ProductDetailForm extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Form(
+        key: productDetailForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
@@ -184,8 +191,6 @@ class _ProductDetailForm extends StatelessWidget {
                   productDetailForm.updateAvailability = value,
             ),
             const SizedBox(height: 30),
-
-            // Submit
           ],
         ),
       ),
