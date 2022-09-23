@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class ProductModel {
-  final String? id;
+  String? id;
   bool available;
   String name;
   String description;

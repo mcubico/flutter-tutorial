@@ -31,13 +31,13 @@ class ProductService extends ChangeNotifier {
     isLoading = true;
     final url = Uri.https(_baseUlr, 'products.json');
     final httpResponse = await http.get(url);
-    final List data = json.decode(httpResponse.body);
+    final Map<String, dynamic> data = json.decode(httpResponse.body);
 
-    for (var element in data) {
-      if (element == null) continue;
-
-      products.add(ProductModel.fromMap(element));
-    }
+    data.forEach((key, value) {
+      ProductModel product = ProductModel.fromMap(value);
+      product.id = key;
+      products.add(product);
+    });
 
     isLoading = false;
 
@@ -48,10 +48,11 @@ class ProductService extends ChangeNotifier {
     print('Start: ProductService -> updateOrCreateProduct');
 
     isLoading = true;
-    if (product.id == null)
-      return;
-    else
+    if (product.id == null) {
+      await _createProduct(product);
+    } else {
       await _updateProduct(product);
+    }
 
     isLoading = false;
     print('End: ProductService -> updateOrCreateProduct');
@@ -70,9 +71,29 @@ class ProductService extends ChangeNotifier {
     return product.id!;
   }
 
+  Future<String> _createProduct(ProductModel product) async {
+    print('Start: ProductService -> _createProduct');
+
+    final url = Uri.https(_baseUlr, 'products.json');
+    final httpResponse = await http.post(url, body: product.toJson());
+    final dataResponse = json.decode(httpResponse.body);
+
+    product.id = dataResponse['name'];
+    _updateProductList(product);
+
+    print('End: ProductService -> _createProduct');
+    return product.id!;
+  }
+
   void _updateProductList(ProductModel product) {
     final index = products.indexWhere((element) => element.id == product.id);
-    products[index] = product;
+
+    if (index >= 0) {
+      products[index] = product;
+    } else {
+      products.add(product);
+    }
+
     notifyListeners();
   }
 }

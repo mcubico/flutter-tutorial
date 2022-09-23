@@ -60,7 +60,8 @@ class _ProductDetailScreenBody extends StatelessWidget {
           onPressed: () async {
             if (!productDetailForm.isValidForm()) return;
 
-            await productService.updateOrCreateProduct(productDetailForm.product);
+            await productService
+                .updateOrCreateProduct(productDetailForm.product);
           },
         ),
       ),
