@@ -6,6 +6,7 @@ import 'package:apifernando/app/ui/helpers/helpers.dart';
 import 'package:apifernando/app/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -46,7 +47,12 @@ class _ProductDetailScreenBody extends StatelessWidget {
                     imagePath: productService.selectedProduct?.picture,
                   ),
                   Positioned(top: 20, left: 20, child: _BackButton()),
-                  Positioned(top: 20, right: 40, child: _CameraButton()),
+                  Positioned(
+                      top: 20,
+                      right: 40,
+                      child: _CameraButton(
+                        productService: productService,
+                      )),
                 ],
               ),
               _ProductDetailFormContainer(),
@@ -84,6 +90,10 @@ class _BackButton extends StatelessWidget {
 }
 
 class _CameraButton extends StatelessWidget {
+  final ProductService productService;
+
+  const _CameraButton({required this.productService});
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -92,7 +102,21 @@ class _CameraButton extends StatelessWidget {
         size: 40,
         color: Colors.white,
       ),
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () async {
+        final picker = new ImagePicker();
+        final XFile? image = await picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 100,
+        );
+
+        if (image == null) {
+          print('No seleccionó nada');
+          return;
+        }
+
+        productService.updateSelectedProductPicture(image.path);
+        print('Imagen: ${image.path}');
+      },
     );
   }
 }

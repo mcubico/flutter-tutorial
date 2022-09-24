@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:apifernando/app/domain/models/models.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class ProductService extends ChangeNotifier {
   // Properties
   final List<ProductModel> products = [];
   late ProductModel? selectedProduct;
+  late File? pictureToUpdate;
 
   bool get isLoading => _isLoading;
   set isLoading(value) {
@@ -93,6 +95,13 @@ class ProductService extends ChangeNotifier {
     } else {
       products.add(product);
     }
+
+    notifyListeners();
+  }
+
+  void updateSelectedProductPicture(String path) {
+    selectedProduct?.picture = path;
+    pictureToUpdate = File.fromUri(Uri(path: path));
 
     notifyListeners();
   }

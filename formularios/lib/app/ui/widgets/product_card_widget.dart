@@ -14,7 +14,10 @@ class ProductCardWidget extends StatelessWidget {
         height: 400,
         decoration: _createCardShape(),
         child: Stack(
-          children: const [_BackgroundImage(), _ProductDetail()],
+          children: const [
+            _BackgroundImage(),
+            _ProductDetail(),
+          ],
         ),
       ),
     );
@@ -44,7 +47,7 @@ class _BackgroundImage extends StatelessWidget {
         width: double.infinity,
         height: 400,
         child: FadeInImage(
-          placeholder: AssetImage('assets/images/jar-loading.gif'),
+          placeholder: AssetImage(loadingImagePath),
           image: NetworkImage('https://via.placeholder.com/400x300/f6f6f6'),
           fit: BoxFit.cover,
         ),
@@ -58,8 +61,6 @@ class _ProductDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:apifernando/app/domain/helpers/constants/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -19,15 +21,7 @@ class ProductImageWidget extends StatelessWidget {
             topLeft: Radius.circular(45),
             topRight: Radius.circular(45),
           ),
-          child: imagePath == null
-              ? _getNoImage()
-              : FadeInImage(
-                  placeholder: const AssetImage(loadingImagePath),
-                  image: NetworkImage(imagePath!),
-                  imageErrorBuilder: (context, error, stackTrace) =>
-                      _getNoImage(),
-                  fit: BoxFit.cover,
-                ),
+          child: _setImage(imagePath),
         ),
       ),
     );
@@ -46,6 +40,24 @@ class ProductImageWidget extends StatelessWidget {
           ),
         ],
       );
+
+  Widget _setImage(String? path) {
+    if (path == null || path.isEmpty) return _getNoImage();
+
+    if (path.startsWith('http')) {
+      return FadeInImage(
+        placeholder: const AssetImage(loadingImagePath),
+        image: NetworkImage(imagePath!),
+        imageErrorBuilder: (context, error, stackTrace) => _getNoImage(),
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.file(
+      File(path),
+      fit: BoxFit.cover,
+    );
+  }
 
   Image _getNoImage() {
     return Image.asset(
