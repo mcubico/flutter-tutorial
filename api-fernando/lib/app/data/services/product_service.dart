@@ -88,6 +88,8 @@ class ProductService extends ChangeNotifier {
   }
 
   void _updateProductList(ProductModel product) {
+    print('Start: ProductService -> _updateProductList');
+
     final index = products.indexWhere((element) => element.id == product.id);
 
     if (index >= 0) {
@@ -97,6 +99,37 @@ class ProductService extends ChangeNotifier {
     }
 
     notifyListeners();
+
+    print('End: ProductService -> _updateProductList');
+  }
+
+  Future<String?> uploadPicture() async {
+    if (pictureToUpdate == null) return null;
+
+    print('Start: ProductService -> uploadPicture');
+
+    isLoading = true;
+    final url = Uri.parse(
+        'https://api.cloudinary.com/v1_1/dpyy1u2we/image/upload?api_key=793363257913693&upload_preset=tuto-flutter');
+
+    final file =
+        await http.MultipartFile.fromPath('file', pictureToUpdate!.path);
+
+    final imageUploadRequest = http.MultipartRequest('POST', url);
+    imageUploadRequest.files.add(file);
+
+    final streamResponse = await imageUploadRequest.send();
+    final httpResponse = await http.Response.fromStream(streamResponse);
+
+    if (httpResponse.statusCode != HttpStatus.ok) return null;
+
+    final dataResponse = json.decode(httpResponse.body);
+
+    pictureToUpdate = null;
+    isLoading = false;
+
+    print('End: ProductService -> uploadPicture');
+    return dataResponse['secure_url'];
   }
 
   void updateSelectedProductPicture(String path) {
