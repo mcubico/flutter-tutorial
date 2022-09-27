@@ -1,3 +1,4 @@
+import 'package:apifernando/app/data/services/services.dart';
 import 'package:apifernando/app/domain/helpers/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,9 +37,22 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 50),
-              const Text(
-                'Crear una nueva cuenta',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              TextButton(
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, 'register'),
+                style: ButtonStyle(
+                  overlayColor:
+                      MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
+                  shape: MaterialStateProperty.all(const StadiumBorder()),
+                ),
+                child: const Text(
+                  'Sign up',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
               ),
               const SizedBox(height: 200),
             ],
@@ -125,7 +139,16 @@ class _LoginForm extends StatelessWidget {
                     }
 
                     loginForm.isLoading = true;
-                    await Future.delayed(const Duration(seconds: 2));
+
+                    final authService =
+                        Provider.of<AuthService>(context, listen: false);
+                    final String? token = await authService.login(
+                      email: loginForm.email,
+                      password: loginForm.password,
+                    );
+
+                    if (token == null) print('User or password wrong');
+
                     loginForm.isLoading = false;
 
                     // Se usa pushReplacementNamed para que no se de la opción de
