@@ -142,12 +142,12 @@ class _LoginForm extends StatelessWidget {
 
                     final authService =
                         Provider.of<AuthService>(context, listen: false);
-                    final String? token = await authService.login(
+                    final bool loginSuccessful = await authService.login(
                       email: loginForm.email,
                       password: loginForm.password,
                     );
 
-                    if (token == null) print('User or password wrong');
+                    if (!loginSuccessful) print('User or password wrong');
 
                     loginForm.isLoading = false;
 
