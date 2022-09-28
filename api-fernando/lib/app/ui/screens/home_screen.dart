@@ -1,3 +1,4 @@
+import 'package:apifernando/app/data/services/auth_service.dart';
 import 'package:apifernando/app/data/services/product_service.dart';
 import 'package:apifernando/app/domain/models/models.dart';
 import 'package:apifernando/app/ui/screens/screens.dart';
@@ -11,12 +12,22 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productService = Provider.of<ProductService>(context);
+    final authService = Provider.of<AuthService>(context, listen: false);
     if (productService.isLoading) return const LoadingScreen();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Products'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              authService.logout();
+              Navigator.of(context).pushReplacementNamed('checkAuth');
+            },
+            icon: const Icon(Icons.logout_outlined),
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: productService.products.length,
