@@ -1,19 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:apifernando/app/data/services/services.dart';
 import 'package:apifernando/app/domain/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ProductService extends ChangeNotifier {
   // Attributes
   final _baseUlr = 'bitcubico-fb-tutorial-default-rtdb.firebaseio.com';
   bool _isLoading = false;
+  final _storage = FlutterSecureStorage();
 
   // Properties
+  File? pictureToUpdate;
   final List<ProductModel> products = [];
   late ProductModel? selectedProduct;
-  late File? pictureToUpdate;
 
   bool get isLoading => _isLoading;
   set isLoading(value) {
@@ -31,7 +34,11 @@ class ProductService extends ChangeNotifier {
     print('Start: ProductService -> getAll');
 
     isLoading = true;
-    final url = Uri.https(_baseUlr, 'products.json');
+    final url = Uri.https(
+      _baseUlr,
+      'products.json',
+      {'auth': await _getToken()},
+    );
     final httpResponse = await http.get(url);
     final Map<String, dynamic> data = json.decode(httpResponse.body);
 
@@ -45,6 +52,9 @@ class ProductService extends ChangeNotifier {
 
     print('End: ProductService -> getAll');
   }
+
+  Future<String> _getToken() async =>
+      await _storage.read(key: AuthService.tokenKeyName) ?? '';
 
   Future updateOrCreateProduct(ProductModel product) async {
     print('Start: ProductService -> updateOrCreateProduct');
@@ -63,7 +73,11 @@ class ProductService extends ChangeNotifier {
   Future<String> _updateProduct(ProductModel product) async {
     print('Start: ProductService -> _updateProduct');
 
-    final url = Uri.https(_baseUlr, 'products/${product.id}.json');
+    final url = Uri.https(
+      _baseUlr,
+      'products/${product.id}.json',
+      {'auth': await _getToken()},
+    );
     final httpResponse = await http.put(url, body: product.toJson());
     final dataResponse = json.decode(httpResponse.body);
 
@@ -76,7 +90,11 @@ class ProductService extends ChangeNotifier {
   Future<String> _createProduct(ProductModel product) async {
     print('Start: ProductService -> _createProduct');
 
-    final url = Uri.https(_baseUlr, 'products.json');
+    final url = Uri.https(
+      _baseUlr,
+      'products.json',
+      {'auth': await _getToken()},
+    );
     final httpResponse = await http.post(url, body: product.toJson());
     final dataResponse = json.decode(httpResponse.body);
 
