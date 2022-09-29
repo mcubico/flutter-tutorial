@@ -12,7 +12,6 @@ class AuthService extends ChangeNotifier {
   final String _firebaseToken = 'AIzaSyDU3msk-PYJyxaNuTXG_AIeIdk42_SX5CQ';
   final _storage = const FlutterSecureStorage();
 
-
   Future<bool> login({required String email, required String password}) async {
     final url = Uri.https(
       _baseUrl,
@@ -28,7 +27,8 @@ class AuthService extends ChangeNotifier {
     final httpResponse = await http.post(url, body: json.encode(userData));
     final dataResponse = json.decode(httpResponse.body);
 
-    final bool loginSuccessful = httpResponse.statusCode == HttpStatus.ok;
+    final bool loginSuccessful = httpResponse.statusCode == HttpStatus.ok &&
+        dataResponse['error'] == null;
     if (loginSuccessful) {
       await _storage.write(key: _tokenKeyName, value: dataResponse['idToken']);
     }

@@ -1,3 +1,4 @@
+import 'package:apifernando/app/data/services/notification_service.dart';
 import 'package:apifernando/app/data/services/services.dart';
 import 'package:apifernando/app/domain/helpers/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,7 @@ class _LoginForm extends StatelessWidget {
               labelText: 'Correo Electrónico',
               prefixIcon: Icons.alternate_email_rounded,
             ),
-            onChanged: (value) => loginForm.email,
+            onChanged: (value) => loginForm.email = value,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Este campo es requerido';
@@ -110,7 +111,7 @@ class _LoginForm extends StatelessWidget {
               labelText: 'Contraseña',
               prefixIcon: Icons.lock_outline,
             ),
-            onChanged: (value) => loginForm.password,
+            onChanged: (value) => loginForm.password = value,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Este campo es requerido';
@@ -147,9 +148,12 @@ class _LoginForm extends StatelessWidget {
                       password: loginForm.password,
                     );
 
-                    if (!loginSuccessful) print('User or password wrong');
-
                     loginForm.isLoading = false;
+                    if (!loginSuccessful) {
+                      NotificationService.showSnackBar(
+                          'User or password wrong');
+                      return;
+                    }
 
                     // Se usa pushReplacementNamed para que no se de la opción de
                     // regresar al login al usuario ya que se destruye el stack de las

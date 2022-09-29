@@ -1,4 +1,5 @@
 import 'package:apifernando/app/data/services/auth_service.dart';
+import 'package:apifernando/app/data/services/notification_service.dart';
 import 'package:apifernando/app/data/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:apifernando/app/ui/screens/screens.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         'productDetail': (context) => const ProductDetailScreen(),
         'checkAuth': (context) => const CheckAuthScreen(),
       },
+      scaffoldMessengerKey: NotificationService.messengerKey,
       theme: ThemeData.light()
           .copyWith(scaffoldBackgroundColor: Colors.grey.shade300),
     );
