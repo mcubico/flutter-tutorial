@@ -1,4 +1,4 @@
-package com.example.notificaciones
+package com.bitcubico.notificaciones
 
 import io.flutter.embedding.android.FlutterActivity
 
