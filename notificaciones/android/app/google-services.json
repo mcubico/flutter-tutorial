@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "151022351858",
+    "firebase_url": "https://bitcubico-fb-tutorial-default-rtdb.firebaseio.com",
+    "project_id": "bitcubico-fb-tutorial",
+    "storage_bucket": "bitcubico-fb-tutorial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151022351858:android:dcdb53d90f7efe8767e76b",
+        "android_client_info": {
+          "package_name": "com.bitcubico.notificaciones"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151022351858-t9ilk7d70q64s4fn0pnikutfd50pvnln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bitcubico.notificaciones",
+            "certificate_hash": "8759a3da803f20b70da7d130b79084517a2ad1f0"
+          }
+        },
+        {
+          "client_id": "151022351858-lj4ih2htg060e4mkh8ras233pbg3olcf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASS4LY9S5BJ_LTR9oeqEVeOY2WdJSFejU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151022351858-lj4ih2htg060e4mkh8ras233pbg3olcf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
